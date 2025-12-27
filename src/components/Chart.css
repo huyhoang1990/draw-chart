@@ -68,7 +68,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 2000;
+  z-index: 10000;
+  pointer-events: auto;
 }
 
 .delete-confirm-modal {
@@ -78,6 +79,9 @@
   width: 90%;
   max-width: 400px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  pointer-events: auto;
+  position: relative;
+  z-index: 10001;
 }
 
 .delete-confirm-title {
@@ -97,6 +101,12 @@
   display: flex;
   justify-content: flex-end;
   gap: 10px;
+  pointer-events: auto;
+}
+
+.delete-confirm-actions button {
+  pointer-events: auto;
+  cursor: pointer;
 }
 
 .btn-danger {
@@ -109,6 +119,9 @@
   font-size: 14px;
   font-weight: 500;
   transition: all 0.2s;
+  pointer-events: auto;
+  position: relative;
+  z-index: 10002;
 }
 
 .btn-danger:hover {

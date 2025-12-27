@@ -15,13 +15,17 @@ function Chart({ chart, onEdit, onDelete }) {
   }
 
   const handleConfirmDelete = (e) => {
+    e.preventDefault()
     e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
     onDelete()
     setShowDeleteConfirm(false)
   }
 
   const handleCancelDelete = (e) => {
+    e.preventDefault()
     e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
     setShowDeleteConfirm(false)
   }
 
@@ -85,8 +89,16 @@ function Chart({ chart, onEdit, onDelete }) {
       </div>
 
       {showDeleteConfirm && (
-        <div className="delete-confirm-overlay" onClick={handleCancelDelete}>
-          <div className="delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
+        <div 
+          className="delete-confirm-overlay" 
+          onClick={handleCancelDelete}
+          onMouseDown={(e) => e.stopPropagation()}
+        >
+          <div 
+            className="delete-confirm-modal" 
+            onClick={(e) => e.stopPropagation()}
+            onMouseDown={(e) => e.stopPropagation()}
+          >
             <div className="delete-confirm-title">Delete Chart?</div>
             <div className="delete-confirm-message">
               Are you sure you want to delete "{chart.title || 'Untitled Chart'}"? 
@@ -96,12 +108,22 @@ function Chart({ chart, onEdit, onDelete }) {
               <button 
                 className="btn btn-secondary" 
                 onClick={handleCancelDelete}
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  e.nativeEvent.stopImmediatePropagation()
+                }}
               >
                 Cancel
               </button>
               <button 
                 className="btn btn-danger" 
                 onClick={handleConfirmDelete}
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  e.nativeEvent.stopImmediatePropagation()
+                }}
               >
                 Delete
               </button>
