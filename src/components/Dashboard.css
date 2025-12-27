@@ -1,5 +1,45 @@
+.dashboard-container {
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-grid-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    linear-gradient(to right, #e5e7eb 1px, transparent 1px),
+    linear-gradient(to bottom, #e5e7eb 1px, transparent 1px);
+  background-size: 50px 50px;
+  background-position: 0 0;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.5;
+}
+
+/* Ensure grid layout aligns with background grid */
+.layout {
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard-header {
+  position: relative;
+  z-index: 1;
+}
+
 .layout {
   position: relative;
+  z-index: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.empty-dashboard {
+  position: relative;
+  z-index: 1;
 }
 
 .react-grid-item {

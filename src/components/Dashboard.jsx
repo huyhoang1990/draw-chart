@@ -11,11 +11,23 @@ function Dashboard({ dashboard, onUpdate, onDelete }) {
   const [editingChart, setEditingChart] = useState(null)
   const [containerWidth, setContainerWidth] = useState(1200)
   const containerRef = useRef(null)
+  
+  // Grid cell size - matches background grid
+  const GRID_CELL_SIZE = 50
+  const GRID_COLS = 12
 
   useEffect(() => {
     const updateWidth = () => {
       if (containerRef.current) {
-        setContainerWidth(containerRef.current.offsetWidth)
+        const width = containerRef.current.offsetWidth
+        // Align container width to ensure columns align with background grid
+        // Each column should be a multiple of GRID_CELL_SIZE
+        // Column width = containerWidth / GRID_COLS, so we want containerWidth to be multiple of GRID_CELL_SIZE * GRID_COLS
+        const columnWidth = width / GRID_COLS
+        const cellsPerColumn = Math.floor(columnWidth / GRID_CELL_SIZE)
+        const alignedColumnWidth = cellsPerColumn * GRID_CELL_SIZE
+        const alignedWidth = alignedColumnWidth * GRID_COLS
+        setContainerWidth(alignedWidth || width)
       }
     }
     updateWidth()
@@ -45,7 +57,7 @@ function Dashboard({ dashboard, onUpdate, onDelete }) {
         const lastRowItems = existingLayout.filter(l => l.y + l.h === maxY)
         const maxX = Math.max(...lastRowItems.map(l => l.x + l.w))
         
-        if (maxX + chartConfig.w <= 12) {
+        if (maxX + chartConfig.w <= GRID_COLS) {
           x = maxX
           y = maxY - chartConfig.h
         } else {
@@ -114,6 +126,7 @@ function Dashboard({ dashboard, onUpdate, onDelete }) {
 
   return (
     <div className="dashboard-container" ref={containerRef}>
+      <div className="dashboard-grid-background"></div>
       <div className="dashboard-header">
         <div className="dashboard-title">{dashboard.name}</div>
         <div>
@@ -141,12 +154,14 @@ function Dashboard({ dashboard, onUpdate, onDelete }) {
         <GridLayout
           className="layout"
           layout={dashboard.layout}
-          cols={12}
-          rowHeight={100}
+          cols={GRID_COLS}
+          rowHeight={GRID_CELL_SIZE}
           width={containerWidth}
           onLayoutChange={onLayoutChange}
           isDraggable={true}
           isResizable={true}
+          compactType={null}
+          preventCollision={false}
         >
           {dashboard.charts.map(chart => (
             <div key={chart.id}>
