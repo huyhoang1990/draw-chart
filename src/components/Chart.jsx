@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import NumberChart from './ChartTypes/NumberChart'
 import LineChart from './ChartTypes/LineChart'
 import BarChart from './ChartTypes/BarChart'
@@ -6,6 +6,29 @@ import TableChart from './ChartTypes/TableChart'
 import './Chart.css'
 
 function Chart({ chart, onEdit, onDelete }) {
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+
+  const handleDeleteClick = (e) => {
+    e.stopPropagation()
+    setShowDeleteConfirm(true)
+  }
+
+  const handleConfirmDelete = (e) => {
+    e.stopPropagation()
+    onDelete()
+    setShowDeleteConfirm(false)
+  }
+
+  const handleCancelDelete = (e) => {
+    e.stopPropagation()
+    setShowDeleteConfirm(false)
+  }
+
+  const handleEditClick = (e) => {
+    e.stopPropagation()
+    onEdit()
+  }
+
   const renderChart = () => {
     switch (chart.type) {
       case 'number':
@@ -22,22 +45,62 @@ function Chart({ chart, onEdit, onDelete }) {
   }
 
   return (
-    <div className="chart-item">
-      <div className="chart-header">
-        <div className="chart-title">{chart.title || 'Untitled Chart'}</div>
-        <div className="chart-actions">
-          <button className="btn-icon" onClick={onEdit} title="Edit">
-            ✏️
-          </button>
-          <button className="btn-icon" onClick={onDelete} title="Delete">
-            🗑️
-          </button>
+    <>
+      <div className="chart-item">
+        <div className="chart-header">
+          <div className="chart-title drag-handle">{chart.title || 'Untitled Chart'}</div>
+          <div className="chart-actions">
+            <button 
+              className="btn-icon btn-edit" 
+              onClick={handleEditClick} 
+              onMouseDown={(e) => e.stopPropagation()}
+              onMouseUp={(e) => e.stopPropagation()}
+              title="Edit Chart"
+            >
+              ✏️
+            </button>
+            <button 
+              className="btn-icon btn-delete" 
+              onClick={handleDeleteClick} 
+              onMouseDown={(e) => e.stopPropagation()}
+              onMouseUp={(e) => e.stopPropagation()}
+              title="Delete Chart"
+            >
+              🗑️
+            </button>
+          </div>
+        </div>
+        <div className="chart-content">
+          {renderChart()}
         </div>
       </div>
-      <div className="chart-content">
-        {renderChart()}
-      </div>
-    </div>
+
+      {showDeleteConfirm && (
+        <div className="delete-confirm-overlay" onClick={handleCancelDelete}>
+          <div className="delete-confirm-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="delete-confirm-title">Delete Chart?</div>
+            <div className="delete-confirm-message">
+              Are you sure you want to delete "{chart.title || 'Untitled Chart'}"? 
+              This action cannot be undone.
+            </div>
+            <div className="delete-confirm-actions">
+              <button 
+                className="btn btn-secondary" 
+                onClick={handleCancelDelete}
+              >
+                Cancel
+              </button>
+              <button 
+                className="btn btn-danger" 
+                onClick={handleConfirmDelete}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   )
 }
 

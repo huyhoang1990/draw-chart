@@ -109,6 +109,8 @@ body {
   margin-bottom: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid #e9ecef;
+  position: relative;
+  z-index: 1;
 }
 
 .chart-title {
@@ -120,20 +122,11 @@ body {
 .chart-actions {
   display: flex;
   gap: 8px;
+  position: relative;
+  z-index: 20;
+  pointer-events: auto;
 }
 
-.btn-icon {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 4px 8px;
-  color: #6c757d;
-  font-size: 14px;
-}
-
-.btn-icon:hover {
-  color: #007bff;
-}
 
 .chart-content {
   flex: 1;
