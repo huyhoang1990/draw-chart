@@ -147,7 +147,6 @@ function Dashboard({ dashboard, onUpdate, onDelete }) {
           onLayoutChange={onLayoutChange}
           isDraggable={true}
           isResizable={true}
-          draggableHandle=".drag-handle"
         >
           {dashboard.charts.map(chart => (
             <div key={chart.id}>

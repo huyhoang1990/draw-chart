@@ -9,6 +9,7 @@ function Chart({ chart, onEdit, onDelete }) {
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
 
   const handleDeleteClick = (e) => {
+    e.preventDefault()
     e.stopPropagation()
     setShowDeleteConfirm(true)
   }
@@ -25,8 +26,16 @@ function Chart({ chart, onEdit, onDelete }) {
   }
 
   const handleEditClick = (e) => {
+    e.preventDefault()
     e.stopPropagation()
     onEdit()
+  }
+
+  const handleButtonMouseDown = (e) => {
+    // Stop the drag from starting when clicking buttons
+    // This prevents react-grid-layout from detecting the mousedown
+    e.stopPropagation()
+    e.nativeEvent.stopImmediatePropagation()
   }
 
   const renderChart = () => {
@@ -48,12 +57,12 @@ function Chart({ chart, onEdit, onDelete }) {
     <>
       <div className="chart-item">
         <div className="chart-header">
-          <div className="chart-title drag-handle">{chart.title || 'Untitled Chart'}</div>
+          <div className="chart-title">{chart.title || 'Untitled Chart'}</div>
           <div className="chart-actions">
             <button 
               className="btn-icon btn-edit" 
-              onClick={handleEditClick} 
-              onMouseDown={(e) => e.stopPropagation()}
+              onClick={handleEditClick}
+              onMouseDown={handleButtonMouseDown}
               onMouseUp={(e) => e.stopPropagation()}
               title="Edit Chart"
             >
@@ -61,8 +70,8 @@ function Chart({ chart, onEdit, onDelete }) {
             </button>
             <button 
               className="btn-icon btn-delete" 
-              onClick={handleDeleteClick} 
-              onMouseDown={(e) => e.stopPropagation()}
+              onClick={handleDeleteClick}
+              onMouseDown={handleButtonMouseDown}
               onMouseUp={(e) => e.stopPropagation()}
               title="Delete Chart"
             >
